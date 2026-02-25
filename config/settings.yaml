@@ -1,0 +1,95 @@
+# Modular RAG MCP Server Settings
+
+# LLM Configuration
+llm:
+  provider: "ollama"  # Options: openai, azure, ollama
+  model: "llama3"
+  temperature: 0.3
+  max_tokens: 1000
+  
+  # OpenAI-specific settings
+  openai:
+    api_key: "${OPENAI_API_KEY}"
+  
+  # Azure-specific settings
+  azure:
+    endpoint: "${AZURE_OPENAI_ENDPOINT}"
+    api_key: "${AZURE_OPENAI_API_KEY}"
+    api_version: "2024-02-01"
+    deployment_name: "gpt-4"
+  
+  # Ollama-specific settings
+  ollama:
+    base_url: "http://localhost:11434"
+
+# Embedding Configuration
+embedding:
+  provider: "ollama"  # Options: openai, azure, ollama
+  model: "nomic-embed-text"
+  dimension: 768
+  batch_size: 32
+  
+  # OpenAI-specific settings
+  openai:
+    api_key: "${OPENAI_API_KEY}"
+  
+  # Azure-specific settings
+  azure:
+    endpoint: "${AZURE_OPENAI_ENDPOINT}"
+    api_key: "${AZURE_OPENAI_API_KEY}"
+    api_version: "2024-02-01"
+    deployment_name: "text-embedding-ada-002"
+  
+  # Ollama-specific settings
+  ollama:
+    base_url: "http://localhost:11434"
+
+# Vector Store Configuration
+vector_store:
+  provider: "chromadb"
+  collection_name: "default"
+  persist_directory: "data/db/chroma"
+  top_k: 5
+
+# Retrieval Configuration
+retrieval:
+  hybrid_search:
+    enabled: true
+    sparse_weight: 0.3
+    dense_weight: 0.7
+  
+  # Rerank Configuration
+  rerank:
+    enabled: false
+    provider: "none"  # Options: llm, cross_encoder, none
+    model: "none"
+
+# Ingestion Configuration
+ingestion:
+  chunk_size: 1000
+  chunk_overlap: 200
+  batch_size: 32
+  
+  # Chunk Refiner Configuration
+  chunk_refiner:
+    enabled: true
+    use_llm: false
+  
+  # Image Captioning Configuration
+  image_captioning:
+    enabled: false
+
+# Observability Configuration
+observability:
+  logging:
+    level: "INFO"
+    format: "json"
+  
+  tracing:
+    enabled: false
+
+# MCP Server Configuration
+mcp_server:
+  host: "localhost"
+  port: 8000
+  stdio_transport: true
