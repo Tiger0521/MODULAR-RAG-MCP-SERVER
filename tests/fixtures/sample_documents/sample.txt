@@ -1,0 +1,13 @@
+# Sample Document
+
+This is a minimal placeholder document for testing purposes.
+
+## Section 1
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Modular RAG MCP Server sample document for ingestion pipeline testing.
+
+## Section 2
+
+This document contains enough text to be split into multiple chunks
+during the ingestion pipeline tests.

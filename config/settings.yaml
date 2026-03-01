@@ -1,95 +1,75 @@
-# Modular RAG MCP Server Settings
+# 主配置文件 - Modular RAG MCP Server
 
-# LLM Configuration
+# LLM 配置
 llm:
-  provider: "ollama"  # Options: openai, azure, ollama
-  model: "llama3"
-  temperature: 0.3
-  max_tokens: 1000
+  provider: "openai"  # openai, azure, ollama, deepseek
+  model: "gpt-4o"
+  api_key: "${OPENAI_API_KEY}"
+  base_url: "https://api.openai.com/v1"
   
-  # OpenAI-specific settings
-  openai:
-    api_key: "${OPENAI_API_KEY}"
-  
-  # Azure-specific settings
+  # Azure OpenAI 配置
   azure:
-    endpoint: "${AZURE_OPENAI_ENDPOINT}"
     api_key: "${AZURE_OPENAI_API_KEY}"
-    api_version: "2024-02-01"
-    deployment_name: "gpt-4"
-  
-  # Ollama-specific settings
+    endpoint: "${AZURE_OPENAI_ENDPOINT}"
+    api_version: "2024-02-15-preview"
+    
+  # Ollama 配置
   ollama:
     base_url: "http://localhost:11434"
+    model: "llama3.1:8b"
 
-# Embedding Configuration
+# Embedding 配置
 embedding:
-  provider: "ollama"  # Options: openai, azure, ollama
-  model: "nomic-embed-text"
-  dimension: 768
-  batch_size: 32
+  provider: "openai"  # openai, azure, ollama, sentence-transformers
+  model: "text-embedding-3-small"
+  api_key: "${OPENAI_API_KEY}"
   
-  # OpenAI-specific settings
-  openai:
-    api_key: "${OPENAI_API_KEY}"
-  
-  # Azure-specific settings
-  azure:
-    endpoint: "${AZURE_OPENAI_ENDPOINT}"
-    api_key: "${AZURE_OPENAI_API_KEY}"
-    api_version: "2024-02-01"
-    deployment_name: "text-embedding-ada-002"
-  
-  # Ollama-specific settings
-  ollama:
-    base_url: "http://localhost:11434"
+  # 本地模型配置
+  local:
+    model: "sentence-transformers/all-MiniLM-L6-v2"
+    device: "cpu"
 
-# Vector Store Configuration
+# Vector Store 配置
 vector_store:
-  provider: "chromadb"
-  collection_name: "default"
-  persist_directory: "data/db/chroma"
-  top_k: 5
-
-# Retrieval Configuration
-retrieval:
-  hybrid_search:
-    enabled: true
-    sparse_weight: 0.3
-    dense_weight: 0.7
+  provider: "chroma"  # chroma, qdrant, pinecone
   
-  # Rerank Configuration
-  rerank:
-    enabled: false
-    provider: "none"  # Options: llm, cross_encoder, none
-    model: "none"
+  # ChromaDB 配置
+  chroma:
+    persist_directory: "./data/chroma"
+    collection_name: "documents"
+    
+  # Qdrant 配置
+  qdrant:
+    url: "http://localhost:6333"
+    collection_name: "documents"
 
-# Ingestion Configuration
-ingestion:
+# BM25 配置
+bm25:
+  index_directory: "./data/bm25"
+  
+# 图片存储配置
+image_storage:
+  directory: "./data/images"
+  max_size_mb: 10
+
+# 追踪配置
+tracing:
+  enabled: true
+  output_file: "./logs/traces.jsonl"
+  
+# 日志配置
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "./logs/app.log"
+
+# MCP Server 配置
+mcp_server:
+  name: "modular-rag-server"
+  version: "0.1.0"
+  
+# 处理配置
+processing:
   chunk_size: 1000
   chunk_overlap: 200
-  batch_size: 32
-  
-  # Chunk Refiner Configuration
-  chunk_refiner:
-    enabled: true
-    use_llm: false
-  
-  # Image Captioning Configuration
-  image_captioning:
-    enabled: false
-
-# Observability Configuration
-observability:
-  logging:
-    level: "INFO"
-    format: "json"
-  
-  tracing:
-    enabled: false
-
-# MCP Server Configuration
-mcp_server:
-  host: "localhost"
-  port: 8000
-  stdio_transport: true
+  max_concurrent: 4

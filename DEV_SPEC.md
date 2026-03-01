@@ -255,7 +255,7 @@
 			- 动作：合并在逻辑上紧密相关但被物理切断的段落，剔除无意义的页眉页脚或乱码（去噪），确保每个 Chunk 是自包含（Self-contained）的语义单元。
 		2. **语义元数据注入 (Semantic Metadata Enrichment)**：
 			- 策略：在基础元数据（路径、页码）之上，利用 LLM 提取高维语义特征。
-			- 产出：为每个 Chunk 自动生成 `Title`（精准小标题）、`Summary`（内容摘要）和 `Tags`（主题标签），并将其注入到 Metadata 字段中，支持后续的混合检索与精确过滤。
+			- 产出：为每个 Chunk 自动生成 `Title`（精准小标题）、`Summary`（内容摘要）和 `Tags`（主题标签），并将其注入到 Metadata 字段中，支持后续的混合检索与精确过滤。在每个chunk的Metadata（元数据）里，硬塞一个字段（智能重组前的chunk）："raw_content_hash": "Hash_A"。
 		3. **多模态增强 (Multimodal Enrichment / Image Captioning)**：
 			- 策略：扫描文档片段中的图像引用，调用 Vision LLM（如 GPT-4o）进行视觉理解。
 			- 动作：生成高保真的文本描述（Caption），描述图表逻辑或提取截图文字。
@@ -277,7 +277,7 @@
 		2. **Payload Data**: 完整的 Chunk 原始文本 (Content) 及 Metadata。
 		**机制优势**：确保检索命中 ID 后能立即取回对应的正文内容，无需额外的查库操作 (Lookup)，保障了 Retrieve 阶段的毫秒级响应。
 - **幂等性设计 (Idempotency)**：
-		- 为每个 Chunk 生成全局唯一的 `chunk_id`，生成算法采用确定的哈希组合：`hash(source_path + section_path + content_hash)`。
+		- 为每个 Chunk 生成全局唯一的 `chunk_id`，生成算法采用确定的哈希组合：`hash(source_path + heading_path + relative_chunk_index)`。
 		- 写入时采用 "Upsert"（更新或插入）语义，确保同一文档即使被多次处理，数据库中也永远只有一份最新副本，彻底避免重复索引问题。
 	- **原子性保证**：以 Batch 为单位进行事务性写入，确保索引状态的一致性。
 
@@ -317,10 +317,10 @@
 - **Query Processing (查询预处理)**
 	- **核心假设**：输入 Query 已由上游（Client/MCP Host）完成会话上下文补全（De-referencing），不仅如此，还进行了指代消歧。
 	- **查询转换 (Transformation) 与扩张策略 (Expansion Strategy)**：
-		- **Keyword Extraction**：利用 NLP 工具提取 Query 中的关键实体与动词（去停用词），生成用于稀疏检索的 Token 列表。
+		- **Keyword Extraction**：利用 jieba 工具提取 Query 中的关键实体与动词（去停用词），生成用于稀疏检索的 Token 列表。
 		- **Query Expansion **：
 			- 系统可做 Synonym/Alias Expansion（同义词/别名/缩写扩展），默认策略采用“**扩展融入稀疏检索、稠密检索保持单次**”以控制成本与复杂度。
-			- **Sparse Route (BM25)**：将“关键词 + 同义词/别名”合并为一个查询表达式（逻辑上按 `OR` 扩展），**只执行一次稀疏检索**。原始关键词可赋予更高权重以抑制语义漂移。
+			- **Sparse Route (BM25)**：将“关键词 + 同义词/别名 + 原始输入”合并为一个查询表达式（逻辑上按 `OR` 扩展），**只执行一次稀疏检索**。原始输入可赋予更高权重以抑制语义漂移。
 			- **Dense Route (Embedding)**：使用原始 query（或轻度改写后的语义 query）生成 embedding，**只执行一次稠密检索**；默认不为每个同义词单独触发额外的向量检索请求。
 
 - **Hybrid Search Execution (双路混合检索)**
@@ -1952,8 +1952,8 @@ dashboard:
 | 任务编号 | 任务名称 | 状态 | 完成日期 | 备注 |
 |---------|---------|------|---------|------|
 | A1 | 初始化目录树与最小可运行入口 | [x] | 2026-02-21 | 完成目录结构创建和基础文件编写 |
-| A2 | 引入 pytest 并建立测试目录约定 | [ ] | - |  |
-| A3 | 配置加载与校验（Settings） | [ ] | - |  |
+| A2 | 引入 pytest 并建立测试目录约定 | [x] | 2026-03-01 | pytest 配置完成，smoke tests 通过，fixtures/sample_documents 占位创建 |
+| A3 | 配置加载与校验（Settings） | [x] | 2026-03-01 | Settings/load_settings 实现完成，修复 extra='ignore' 使 YAML 嵌套字段可加载，19 tests 全通过 |
 
 #### 阶段 B：Libs 可插拔层
 
