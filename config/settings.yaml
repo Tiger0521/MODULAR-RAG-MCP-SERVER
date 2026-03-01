@@ -63,6 +63,12 @@ logging:
   format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
   file: "./logs/app.log"
 
+# 评估配置
+evaluator:
+  backend: "custom"  # custom, ragas
+  backends:
+    - "custom"
+
 # MCP Server 配置
 mcp_server:
   name: "modular-rag-server"

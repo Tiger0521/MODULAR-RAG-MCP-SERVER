@@ -50,6 +50,14 @@ class SplitterSettings(BaseSettings):
     separators: Optional[Any] = Field(default=None, description="自定义分隔符列表")
 
 
+class EvaluatorSettings(BaseSettings):
+    """Evaluator 配置"""
+    model_config = ConfigDict(extra='ignore')
+
+    backend: str = Field(default="custom", description="Evaluator 后端: custom, ragas 等")
+    backends: list = Field(default_factory=lambda: ["custom"], description="启用的 backends 列表（用于 CompositeEvaluator）")
+
+
 class RerankerSettings(BaseSettings):
     """Reranker 配置"""
     model_config = ConfigDict(extra='ignore')
@@ -101,6 +109,7 @@ class Settings(BaseSettings):
     splitter: SplitterSettings = Field(default_factory=SplitterSettings)
     vector_store: VectorStoreSettings = Field(default_factory=VectorStoreSettings)
     reranker: RerankerSettings = Field(default_factory=RerankerSettings)
+    evaluator: EvaluatorSettings = Field(default_factory=EvaluatorSettings)
     processing: ProcessingSettings = Field(default_factory=ProcessingSettings)
     logging: LoggingSettings = Field(default_factory=LoggingSettings)
     

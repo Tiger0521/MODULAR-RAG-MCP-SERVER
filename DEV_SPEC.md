@@ -1964,7 +1964,7 @@ dashboard:
 | B3 | Splitter 抽象接口与工厂 | [x] | 2026-03-01 | BaseSplitter/SplitterError + SplitterFactory 注册表模式，SplitterSettings 集成 Settings，26 tests 通过 |
 | B4 | VectorStore 抽象接口与工厂 | [x] | 2026-03-01 | BaseVectorStore/VectorRecord/QueryResult/VectorStoreError + VectorStoreFactory 注册表模式，40 tests 通过 |
 | B5 | Reranker 抽象接口与工厂（含 None 回退） | [x] | 2026-03-01 | BaseReranker/RerankerError/NoneReranker + RerankerFactory 注册表模式，内置 none 回退无需注册，RerankerSettings 集成 Settings，27 tests 通过 |
-| B6 | Evaluator 抽象接口与工厂 | [ ] | - |  |
+| B6 | Evaluator 抽象接口与工厂 | [x] | 2026-03-01 | BaseEvaluator/EvaluatorError/EvalInput/EvalOutput + EvaluatorFactory 注册表模式，CustomEvaluator 实现 hit_rate/mrr/precision/recall，EvaluatorSettings 集成 Settings，54 tests 通过 |
 | B7.1 | OpenAI-Compatible LLM 实现 | [ ] | - |  |
 | B7.2 | Ollama LLM 实现 | [ ] | - |  |
 | B7.3 | OpenAI & Azure Embedding 实现 | [ ] | - |  |
@@ -2067,7 +2067,7 @@ dashboard:
 | 阶段 | 总任务数 | 已完成 | 进度 |
 |------|---------|--------|------|
 | 阶段 A | 3 | 3 | 100% |
-| 阶段 B | 16 | 3 | 19% |
+| 阶段 B | 16 | 6 | 38% |
 | 阶段 C | 15 | 0 | 0% |
 | 阶段 D | 7 | 0 | 0% |
 | 阶段 E | 6 | 0 | 0% |
@@ -2075,7 +2075,7 @@ dashboard:
 | 阶段 G | 6 | 0 | 0% |
 | 阶段 H | 5 | 0 | 0% |
 | 阶段 I | 5 | 0 | 0% |
-| **总计** | **68** | **6** | **8.82%** |
+| **总计** | **68** | **9** | **13.24%** |
 
 
 ---
