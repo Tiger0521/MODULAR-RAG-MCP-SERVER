@@ -40,6 +40,16 @@ class EmbeddingSettings(BaseSettings):
     device: str = Field(default="cpu", description="运行设备")
 
 
+class SplitterSettings(BaseSettings):
+    """Splitter配置"""
+    model_config = ConfigDict(extra='ignore')
+
+    provider: str = Field(default="recursive", description="切分器提供商: recursive, semantic, fixed")
+    chunk_size: int = Field(default=1000, description="分块大小（字符数）")
+    chunk_overlap: int = Field(default=200, description="分块重叠（字符数）")
+    separators: Optional[Any] = Field(default=None, description="自定义分隔符列表")
+
+
 class VectorStoreSettings(BaseSettings):
     """向量存储配置"""
     model_config = ConfigDict(extra='ignore')
@@ -80,6 +90,7 @@ class Settings(BaseSettings):
     # 各模块配置
     llm: LLMSettings = Field(default_factory=LLMSettings)
     embedding: EmbeddingSettings = Field(default_factory=EmbeddingSettings)
+    splitter: SplitterSettings = Field(default_factory=SplitterSettings)
     vector_store: VectorStoreSettings = Field(default_factory=VectorStoreSettings)
     processing: ProcessingSettings = Field(default_factory=ProcessingSettings)
     logging: LoggingSettings = Field(default_factory=LoggingSettings)
