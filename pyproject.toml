@@ -20,6 +20,7 @@ pydantic-settings = "^2.13"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["."]
 markers = ["unit: Unit tests", "integration: Integration tests", "e2e: End-to-end tests"]
 
 [build-system]
