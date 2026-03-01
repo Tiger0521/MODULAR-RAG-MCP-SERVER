@@ -50,6 +50,14 @@ class SplitterSettings(BaseSettings):
     separators: Optional[Any] = Field(default=None, description="自定义分隔符列表")
 
 
+class RerankerSettings(BaseSettings):
+    """Reranker 配置"""
+    model_config = ConfigDict(extra='ignore')
+
+    backend: str = Field(default="none", description="Reranker 后端: none, llm, cross_encoder")
+    top_n: int = Field(default=5, description="重排后保留的最大候选数量")
+
+
 class VectorStoreSettings(BaseSettings):
     """向量存储配置"""
     model_config = ConfigDict(extra='ignore')
@@ -92,6 +100,7 @@ class Settings(BaseSettings):
     embedding: EmbeddingSettings = Field(default_factory=EmbeddingSettings)
     splitter: SplitterSettings = Field(default_factory=SplitterSettings)
     vector_store: VectorStoreSettings = Field(default_factory=VectorStoreSettings)
+    reranker: RerankerSettings = Field(default_factory=RerankerSettings)
     processing: ProcessingSettings = Field(default_factory=ProcessingSettings)
     logging: LoggingSettings = Field(default_factory=LoggingSettings)
     
