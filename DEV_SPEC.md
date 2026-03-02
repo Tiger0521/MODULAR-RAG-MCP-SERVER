@@ -1965,7 +1965,7 @@ dashboard:
 | B4 | VectorStore 抽象接口与工厂 | [x] | 2026-03-01 | BaseVectorStore/VectorRecord/QueryResult/VectorStoreError + VectorStoreFactory 注册表模式，40 tests 通过 |
 | B5 | Reranker 抽象接口与工厂（含 None 回退） | [x] | 2026-03-01 | BaseReranker/RerankerError/NoneReranker + RerankerFactory 注册表模式，内置 none 回退无需注册，RerankerSettings 集成 Settings，27 tests 通过 |
 | B6 | Evaluator 抽象接口与工厂 | [x] | 2026-03-01 | BaseEvaluator/EvaluatorError/EvalInput/EvalOutput + EvaluatorFactory 注册表模式，CustomEvaluator 实现 hit_rate/mrr/precision/recall，EvaluatorSettings 集成 Settings，54 tests 通过 |
-| B7.1 | OpenAI-Compatible LLM 实现 | [ ] | - |  |
+| B7.1 | OpenAI-Compatible LLM 实现 | [x] | 2026-03-01 | OpenAILLM/AzureLLM/DeepSeekLLM 三个 provider 实现，openai SDK，39 tests 通过（全 mock，不走真实网络） |
 | B7.2 | Ollama LLM 实现 | [ ] | - |  |
 | B7.3 | OpenAI & Azure Embedding 实现 | [ ] | - |  |
 | B7.4 | Ollama Embedding 实现 | [ ] | - |  |
