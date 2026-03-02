@@ -1966,7 +1966,7 @@ dashboard:
 | B5 | Reranker 抽象接口与工厂（含 None 回退） | [x] | 2026-03-01 | BaseReranker/RerankerError/NoneReranker + RerankerFactory 注册表模式，内置 none 回退无需注册，RerankerSettings 集成 Settings，27 tests 通过 |
 | B6 | Evaluator 抽象接口与工厂 | [x] | 2026-03-01 | BaseEvaluator/EvaluatorError/EvalInput/EvalOutput + EvaluatorFactory 注册表模式，CustomEvaluator 实现 hit_rate/mrr/precision/recall，EvaluatorSettings 集成 Settings，54 tests 通过 |
 | B7.1 | OpenAI-Compatible LLM 实现 | [x] | 2026-03-01 | OpenAILLM/AzureLLM/DeepSeekLLM 三个 provider 实现，openai SDK，39 tests 通过（全 mock，不走真实网络） |
-| B7.2 | Ollama LLM 实现 | [ ] | - |  |
+| B7.2 | Ollama LLM 实现 | [x] | 2026-03-02 | OllamaLLM 使用 openai SDK 对接本地 /v1 端点，支持 ollama_base_url/ollama_model 配置，完善错误处理（连接失败/超时/模型未找到），23 tests 通过（全 mock） |
 | B7.3 | OpenAI & Azure Embedding 实现 | [ ] | - |  |
 | B7.4 | Ollama Embedding 实现 | [ ] | - |  |
 | B7.5 | Recursive Splitter 默认实现 | [ ] | - |  |
@@ -2067,7 +2067,7 @@ dashboard:
 | 阶段 | 总任务数 | 已完成 | 进度 |
 |------|---------|--------|------|
 | 阶段 A | 3 | 3 | 100% |
-| 阶段 B | 16 | 6 | 38% |
+| 阶段 B | 16 | 7 | 44% |
 | 阶段 C | 15 | 0 | 0% |
 | 阶段 D | 7 | 0 | 0% |
 | 阶段 E | 6 | 0 | 0% |
@@ -2075,7 +2075,7 @@ dashboard:
 | 阶段 G | 6 | 0 | 0% |
 | 阶段 H | 5 | 0 | 0% |
 | 阶段 I | 5 | 0 | 0% |
-| **总计** | **68** | **9** | **13.24%** |
+| **总计** | **68** | **10** | **14.71%** |
 
 
 ---
